@@ -1,9 +1,9 @@
 package lt.mano.shadywallpaperfrontend;
 
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v7.widget.CardView;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +12,10 @@ import android.widget.ImageView;
 
 import java.util.List;
 
+import lt.mano.shadywallpaperfrontend.imageutils.ImageLoadTask;
+import lt.mano.shadywallpaperfrontend.imageutils.ImageManager;
 import lt.mano.shadywallpaperfrontend.imageutils.ImageUtils;
+import lt.mano.shadywallpaperfrontend.net.ShadyWallpaperService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -25,10 +28,12 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.View
     private OnItemClickListener listener;
     private List<Wallpaper> wallpaperList;
 
+    private ImageManager manager;
     private ShadyWallpaperService service;
 
-    public WallpaperAdapter(ShadyWallpaperService service){
+    public WallpaperAdapter(Context context, ShadyWallpaperService service){
         this.service = service;
+        this.manager = ImageManager.getInstance(context);
         service.boardWalls("wg", 1, new Callback<List<Wallpaper>>() {
             @Override
             public void success(List<Wallpaper> wallpapers, Response response) {
@@ -67,12 +72,13 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Wallpaper wall = wallpaperList.get(i);
-
-        viewHolder.setImage();
+        new ImageLoadTask(manager, viewHolder, wall).execute();
     }
 
     @Override
     public int getItemCount() {
+        if(wallpaperList == null)
+            return 0;
         return wallpaperList.size();
     }
 

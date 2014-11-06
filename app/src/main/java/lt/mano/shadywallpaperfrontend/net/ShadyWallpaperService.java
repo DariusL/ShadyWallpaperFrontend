@@ -1,7 +1,8 @@
-package lt.mano.shadywallpaperfrontend;
+package lt.mano.shadywallpaperfrontend.net;
 
 import java.util.List;
 
+import lt.mano.shadywallpaperfrontend.Wallpaper;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
@@ -11,9 +12,14 @@ import retrofit.http.Path;
  */
 public interface ShadyWallpaperService {
 
-    @GET("/{board}/threads/{page}?r16x9=R1920By1080")
+    @GET("/{board}/walls/{page}?r16x9=R1920By1080")
     public void boardWalls(
             @Path("board") String board,
             @Path("page") int page,
             Callback<List<Wallpaper>> callback);
+
+    @GET("/{board}/walls/{page}?r16x9=R1920By1080")
+    public List<Wallpaper> syncBoardWalls(
+            @Path("board") String board,
+            @Path("page") int page);
 }
