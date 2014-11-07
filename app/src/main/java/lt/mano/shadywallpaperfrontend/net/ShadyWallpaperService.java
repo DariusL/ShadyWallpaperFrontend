@@ -17,9 +17,4 @@ public interface ShadyWallpaperService {
             @Path("board") String board,
             @Path("page") int page,
             Callback<List<Wallpaper>> callback);
-
-    @GET("/{board}/walls/{page}?r16x9=R1920By1080")
-    public List<Wallpaper> syncBoardWalls(
-            @Path("board") String board,
-            @Path("page") int page);
 }

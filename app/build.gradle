@@ -28,4 +28,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile files('libs/retrofit-1.7.1.jar')
     compile files('libs/disk_lru_cache.jar')
+    compile files('libs/picasso-2.4.0.jar')
 }

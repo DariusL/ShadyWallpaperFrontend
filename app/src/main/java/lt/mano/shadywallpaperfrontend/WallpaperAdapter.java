@@ -1,8 +1,6 @@
 package lt.mano.shadywallpaperfrontend;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
-import lt.mano.shadywallpaperfrontend.imageutils.ImageLoadTask;
-import lt.mano.shadywallpaperfrontend.imageutils.ImageManager;
-import lt.mano.shadywallpaperfrontend.imageutils.ImageUtils;
 import lt.mano.shadywallpaperfrontend.net.ShadyWallpaperService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -25,15 +22,16 @@ import retrofit.client.Response;
  */
 public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.ViewHolder> {
 
+    private Context context;
     private OnItemClickListener listener;
     private List<Wallpaper> wallpaperList;
 
-    private ImageManager manager;
     private ShadyWallpaperService service;
 
     public WallpaperAdapter(Context context, ShadyWallpaperService service){
         this.service = service;
-        this.manager = ImageManager.getInstance(context);
+        this.context = context;
+
         service.boardWalls("wg", 1, new Callback<List<Wallpaper>>() {
             @Override
             public void success(List<Wallpaper> wallpapers, Response response) {
@@ -49,16 +47,20 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
+        private Wallpaper wallpaper;
+
         public ViewHolder(ImageView image) {
             super(image);
             image.setOnClickListener(onClickListener);
         }
 
-        public void setImage(Bitmap bitmap, Wallpaper wallpaper){
-            ((ImageView)itemView).setImageBitmap(bitmap);
-            itemView.setTag(wallpaper);
+        public synchronized void setImage(Wallpaper wallpaper){
+            this.wallpaper = wallpaper;
+            Picasso.with(context)
+                    .load(wallpaper.getWallUrl())
+                    .resize(300, 0)
+                    .into((ImageView) itemView);
         }
-
     }
 
     @Override
@@ -72,7 +74,7 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Wallpaper wall = wallpaperList.get(i);
-        new ImageLoadTask(manager, viewHolder, wall).execute();
+        viewHolder.setImage(wall);
     }
 
     @Override

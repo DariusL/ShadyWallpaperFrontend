@@ -25,7 +25,11 @@ public class NetworkingUtils {
         HttpURLConnection connection = null;
         try{
             connection = (HttpURLConnection) url.openConnection();
-            reader.read(connection.getInputStream());
+            int response = connection.getResponseCode();
+            if(response != HttpURLConnection.HTTP_OK)
+                reader.failure(response, connection.getResponseMessage());
+            else
+                reader.success(connection.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
@@ -36,6 +40,7 @@ public class NetworkingUtils {
     }
 
     public interface NetworkReader{
-        public void read(InputStream stream);
+        public void success(InputStream stream);
+        public void failure(int responseCode, String response);
     }
 }

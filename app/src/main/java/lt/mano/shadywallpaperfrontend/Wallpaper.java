@@ -8,9 +8,9 @@ import java.lang.String;
  */
 public class Wallpaper {
     @SerializedName(value="WallUrl")
-    public String wallUrl;
+    private String wallUrl;
     @SerializedName(value="ThumbUrl")
-    public String thumbUrl;
+    private String thumbUrl;
 
     public String getWallUrl() {
         return wallUrl;
