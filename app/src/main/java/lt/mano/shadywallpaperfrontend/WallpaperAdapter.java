@@ -49,23 +49,20 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder{
         private Wallpaper wallpaper;
 
-        public ViewHolder(ImageView image) {
+        public ViewHolder(GridImageView image) {
             super(image);
             image.setOnClickListener(onClickListener);
         }
 
         public synchronized void setImage(Wallpaper wallpaper){
             this.wallpaper = wallpaper;
-            Picasso.with(context)
-                    .load(wallpaper.getWallUrl())
-                    .resize(300, 0)
-                    .into((ImageView) itemView);
+            ((GridImageView)this.itemView).setImage(wallpaper.getWallUrl());
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        ImageView view = (ImageView) LayoutInflater
+        GridImageView view = (GridImageView) LayoutInflater
                 .from(viewGroup.getContext())
                 .inflate(R.layout.grid_item, viewGroup, false);
         return new ViewHolder(view);
@@ -88,11 +85,15 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.View
         @Override
         public void onClick(View view) {
             if(listener != null)
-                listener.onItemClick((Wallpaper) view.getTag());
+                listener.onItemClick(view, (Wallpaper) view.getTag());
         }
     };
 
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
+
     public interface OnItemClickListener{
-        public void onItemClick(Wallpaper item);
+        public void onItemClick(View view, Wallpaper item);
     }
 }
