@@ -3,6 +3,7 @@ package lt.mano.shadywallpaperfrontend;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.opengl.EGLExt;
@@ -51,7 +52,7 @@ public class FullscreenImageActivity extends ActionBarActivity {
         url = getIntent().getExtras().getString(ARG_URL);
         fullscreenImage.setImage(url);
 
-        imagePath = new File(getCacheDir().getAbsolutePath() + "/" + url.replace('/', '*'));
+        imagePath = new File(getExternalCacheDir().getAbsolutePath() + "/" + url.replace('/', '*'));
     }
 
     @Override
@@ -80,20 +81,27 @@ public class FullscreenImageActivity extends ActionBarActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    FileOutputStream out = null;
-                    try{
-                        out = new FileOutputStream(imagePath);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-                    }catch (IOException e){
-                        e.printStackTrace();
-                        onBitmapFailed(null);
-                    }finally {
+                    BitmapFactory.Options ops = new BitmapFactory.Options();
+                    ops.inJustDecodeBounds = true;
+                    BitmapFactory.decodeFile(imagePath.getAbsolutePath(), ops);
+                    //first time sharing this file
+                    if(ops.outHeight < 0 || ops.outWidth < 0) {
+
+                        FileOutputStream out = null;
                         try {
-                            if (out != null) {
-                                out.close();
-                            }
-                        }catch (IOException e){
+                            out = new FileOutputStream(imagePath);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                        } catch (IOException e) {
                             e.printStackTrace();
+                            onBitmapFailed(null);
+                        } finally {
+                            try {
+                                if (out != null) {
+                                    out.close();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                     runOnUiThread(new Runnable() {
@@ -102,6 +110,7 @@ public class FullscreenImageActivity extends ActionBarActivity {
                             Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.setType("image/bmp");
                             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(imagePath));
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             startActivity(Intent.createChooser(intent, "Share image"));
                             overlay.setVisibility(View.GONE);
                         }
