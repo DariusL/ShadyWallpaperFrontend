@@ -1,7 +1,10 @@
 package lt.mano.shadywallpaperfrontend;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.opengl.EGLExt;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,7 +15,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -26,7 +32,10 @@ public class FullscreenImageActivity extends ActionBarActivity {
     public static final String ARG_POS_X = "FullscreenImageActivity.POS_X";
     public static final String ARG_POS_Y = "FullscreenImageActivity.POS_Y";
 
+    private File imagePath;
+
     private PicassoImageView fullscreenImage;
+    private View overlay;
 
     private String url;
 
@@ -35,8 +44,14 @@ public class FullscreenImageActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_fullscreen_image);
+
+        overlay = findViewById(R.id.overlay);
+
         fullscreenImage = (PicassoImageView) findViewById(R.id.image_fullscreen);
-        fullscreenImage.setImage(getIntent().getExtras().getString(ARG_URL));
+        url = getIntent().getExtras().getString(ARG_URL);
+        fullscreenImage.setImage(url);
+
+        imagePath = new File(getCacheDir().getAbsolutePath() + "/" + url.replace('/', '*'));
     }
 
     @Override
@@ -52,11 +67,65 @@ public class FullscreenImageActivity extends ActionBarActivity {
                 finish();
                 return true;
             case R.id.action_share_image:
-                //TODO: implement
+                share();
                 return true;
             default:
                 return false;
         }
+    }
+
+    private Target imageTarget = new Target() {
+        @Override
+        public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    FileOutputStream out = null;
+                    try{
+                        out = new FileOutputStream(imagePath);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    }catch (IOException e){
+                        e.printStackTrace();
+                        onBitmapFailed(null);
+                    }finally {
+                        try {
+                            if (out != null) {
+                                out.close();
+                            }
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setType("image/bmp");
+                            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(imagePath));
+                            startActivity(Intent.createChooser(intent, "Share image"));
+                            overlay.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            }).start();
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable drawable) {
+            overlay.setVisibility(View.GONE);
+            //TODO: dialog on failure
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable drawable) {
+        }
+    };
+
+    private void share(){
+        overlay.setVisibility(View.VISIBLE);
+        Picasso.with(this)
+                .load(url)
+                .into(imageTarget);
     }
 
     public static Bundle createBundle(Wallpaper wallpaper, int width, int height, int posX, int posY){
