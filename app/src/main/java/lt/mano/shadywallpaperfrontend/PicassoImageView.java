@@ -11,8 +11,8 @@ import com.squareup.picasso.Picasso;
  * Created by Darius on 2014.11.07.
  */
 public class PicassoImageView extends ImageView{
-    private String url = null;
-    private boolean measured = false;
+    protected String url = null;
+    protected boolean measured = false;
 
     public PicassoImageView(Context context) {
         super(context);
@@ -35,7 +35,6 @@ public class PicassoImageView extends ImageView{
         if (url != null) {
             setImage();
         }
-
     }
 
     public void setImage(String url){
@@ -45,10 +44,10 @@ public class PicassoImageView extends ImageView{
         }
     }
 
-    private void setImage(){
+    protected void setImage(){
         Picasso.with(getContext())
                 .load(url)
-                .resize(getWidth(), getWidth())
+                .resize(getWidth(), getHeight())
                 .centerCrop()
                 .into(this);
     }

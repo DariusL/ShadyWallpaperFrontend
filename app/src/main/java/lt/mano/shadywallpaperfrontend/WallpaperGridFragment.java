@@ -2,6 +2,7 @@ package lt.mano.shadywallpaperfrontend;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -25,17 +26,22 @@ import lt.mano.shadywallpaperfrontend.net.ShadyWallpaperService;
  */
 public class WallpaperGridFragment extends Fragment implements WallpaperAdapter.OnItemClickListener{
 
-    private ServiceActivity activity;
+    private static final String STATE_SCROLL = "WallpaperGridFragment.State.Scroll";
+
+    private MainActivity activity;
     private ShadyWallpaperService service;
+    private RecyclerView recycler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = (RecyclerView) inflater.inflate(R.layout.fragment_wallpaper_grid, container, false);
-        RecyclerView recycler = (RecyclerView) view.findViewById(R.id.grid);
+        View view = inflater.inflate(R.layout.fragment_wallpaper_grid, container, false);
+        recycler = (RecyclerView) view.findViewById(R.id.grid);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         recycler.setLayoutManager(layoutManager);
         recycler.setHasFixedSize(true);
-        recycler.setAdapter(new WallpaperAdapter(getActivity(), service));
+        WallpaperAdapter adapter = new WallpaperAdapter(getActivity(), service);
+        adapter.setOnItemClickListener(this);
+        recycler.setAdapter(adapter);
         return view;
     }
 
@@ -43,12 +49,15 @@ public class WallpaperGridFragment extends Fragment implements WallpaperAdapter.
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        this.activity = (ServiceActivity) activity;
+        this.activity = (MainActivity) activity;
         this.service = this.activity.getService();
     }
 
     @Override
     public void onItemClick(View view, Wallpaper item) {
+        Intent intent = new Intent(getActivity(), FullscreenImageActivity.class);
+        intent.putExtra(FullscreenImageActivity.ARG_URL, item.getWallUrl());
+        startActivity(intent);
     }
 
     private Point getWindowSize(){

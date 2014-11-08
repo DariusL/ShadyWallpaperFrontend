@@ -12,6 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import lt.mano.shadywallpaperfrontend.net.PagedDataService;
+import lt.mano.shadywallpaperfrontend.net.PagedServiceWrapper;
 import lt.mano.shadywallpaperfrontend.net.ShadyWallpaperService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -24,26 +26,32 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.View
 
     private Context context;
     private OnItemClickListener listener;
-    private List<Wallpaper> wallpaperList;
 
-    private ShadyWallpaperService service;
+    private PagedDataService<Wallpaper> service;
 
-    public WallpaperAdapter(Context context, ShadyWallpaperService service){
-        this.service = service;
+    public WallpaperAdapter(Context context, final ShadyWallpaperService service){
         this.context = context;
 
-        service.boardWalls("wg", 1, new Callback<List<Wallpaper>>() {
-            @Override
-            public void success(List<Wallpaper> wallpapers, Response response) {
-                WallpaperAdapter.this.wallpaperList = wallpapers;
-                WallpaperAdapter.this.notifyDataSetChanged();
-            }
+        this.service = new PagedDataService<Wallpaper>(
+                new PagedServiceWrapper<Wallpaper>() {
+                    @Override
+                    public void get(int page, Callback<List<Wallpaper>> callback) {
+                        service.boardWalls("wg", page, callback);
+                    }
+                },
+                new PagedDataService.ServiceLoadResult<Wallpaper>() {
+                    @Override
+                    public void dataUpdated() {
+                        notifyDataSetChanged();
+                    }
 
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                Log.e("WallpaperAdapter", "Retrofit error " + retrofitError.toString());
-            }
-        });
+                    @Override
+                    public void endReached() {
+                    }
+                },
+                50
+        );
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -56,6 +64,7 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.View
 
         public synchronized void setImage(Wallpaper wallpaper){
             this.wallpaper = wallpaper;
+            itemView.setTag(wallpaper);
             ((GridImageView)this.itemView).setImage(wallpaper.getWallUrl());
         }
     }
@@ -70,15 +79,13 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Wallpaper wall = wallpaperList.get(i);
+        Wallpaper wall = service.get(i);
         viewHolder.setImage(wall);
     }
 
     @Override
     public int getItemCount() {
-        if(wallpaperList == null)
-            return 0;
-        return wallpaperList.size();
+        return service.getLoadedCount();
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {

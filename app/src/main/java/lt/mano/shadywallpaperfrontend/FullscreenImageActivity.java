@@ -2,9 +2,12 @@ package lt.mano.shadywallpaperfrontend;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.opengl.EGLExt;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.AttributeSet;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -17,52 +20,42 @@ import java.io.IOException;
  */
 public class FullscreenImageActivity extends ActionBarActivity {
 
-    private static final String ARG_URL = "FullscreenImageActivity.URL";
-    private static final String ARG_WIDTH = "FullscreenImageActivity.WIDTH";
-    private static final String ARG_HEIGHT = "FullscreenImageActivity.HEIGHT";
-    private static final String ARG_POS_X = "FullscreenImageActivity.POS_X";
-    private static final String ARG_POS_Y = "FullscreenImageActivity.POS_Y";
+    public static final String ARG_URL = "FullscreenImageActivity.URL";
+    public static final String ARG_WIDTH = "FullscreenImageActivity.WIDTH";
+    public static final String ARG_HEIGHT = "FullscreenImageActivity.HEIGHT";
+    public static final String ARG_POS_X = "FullscreenImageActivity.POS_X";
+    public static final String ARG_POS_Y = "FullscreenImageActivity.POS_Y";
 
     private PicassoImageView fullscreenImage;
-    private ImageView transitionImage;
 
     private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_fullscreen_image);
-
         fullscreenImage = (PicassoImageView) findViewById(R.id.image_fullscreen);
-        transitionImage = (ImageView) findViewById(R.id.image_transition);
+        fullscreenImage.setImage(getIntent().getExtras().getString(ARG_URL));
+    }
 
-        Bundle data = getIntent().getExtras();
-        url = data.getString(ARG_URL);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.fullscreen_image, menu);
+        return true;
+    }
 
-        fullscreenImage.setImage(url);
-        if(savedInstanceState == null){
-
-            int width = data.getInt(ARG_WIDTH);
-            int height = data.getInt(ARG_HEIGHT);
-
-            try{
-                Bitmap bitmap = Picasso
-                        .with(this)
-                        .load(url)
-                        .resize(width, height)
-                        .get();
-
-                transitionImage.setImageBitmap(bitmap);
-
-
-
-            }catch (IOException e){
-
-            }
-
-        }else{
-            fullscreenImage.setVisibility(View.VISIBLE);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_share_image:
+                //TODO: implement
+                return true;
+            default:
+                return false;
         }
     }
 

@@ -32,8 +32,7 @@ import retrofit.converter.GsonConverter;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-        ServiceActivity{
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -61,11 +60,6 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint("http://shadywallpaperservice.apphb.com")
-                .build();
-        service = adapter.create(ShadyWallpaperService.class);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -131,8 +125,13 @@ public class MainActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
     public ShadyWallpaperService getService() {
+        if (service == null) {
+            RestAdapter adapter = new RestAdapter.Builder()
+                    .setEndpoint("http://shadywallpaperservice.apphb.com")
+                    .build();
+            service = adapter.create(ShadyWallpaperService.class);
+        }
         return service;
     }
 
