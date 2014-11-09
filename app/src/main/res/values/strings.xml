@@ -11,5 +11,6 @@
     <string name="action_settings">Settings</string>
     <string name="action_share_image">Share Image</string>
     <string name="loading_image_message">Downloading…</string>
+    <string name="action_set_wallpaper">Set as wallpaper</string>
 
 </resources>
