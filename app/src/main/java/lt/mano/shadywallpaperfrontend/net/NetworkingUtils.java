@@ -43,9 +43,7 @@ public class NetworkingUtils {
             if(connection != null){
                 connection.disconnect();
             }
-            if(urlStream != null){
-                Utils.closeStream(urlStream);
-            }
+            Utils.closeStream(urlStream);
         }
     }
 

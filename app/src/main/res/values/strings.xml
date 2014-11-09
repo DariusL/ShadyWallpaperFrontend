@@ -13,4 +13,55 @@
     <string name="loading_image_message">Downloading…</string>
     <string name="action_set_wallpaper">Set as wallpaper</string>
 
+    <string name="filter_title_r16by9">Lowest shown 16:9 resolution</string>
+    <string name="filter_title_r4by3">Lowest shown 4:3 resolution</string>
+    
+    <string-array name="filter_entries_r16by9">
+        <item>All</item>
+        <item>1280 by 720</item>
+        <item>1366 by 768</item>
+        <item>1600 by 900</item>
+        <item>1920 by 1080</item>
+        <item>2560 by 1440</item>
+        <item>3840 by 2160</item>
+        <item>7680 by 4320</item>
+        <item>None</item>
+    </string-array>
+
+    <string-array name="filter_values_r16by9">
+    <item>All</item>
+    <item>R1280By720</item>
+    <item>R1366By768</item>
+    <item>R1600By900</item>
+    <item>R1920By1080</item>
+    <item>R2560By1440</item>
+    <item>R3840By2160</item>
+    <item>R7680By4320</item>
+    <item>None</item>
+    </string-array>
+
+    <string name="filter_default_r16by9">None</string>
+    <string name="filter_key_r16by9">filter_key_r16by9</string>
+
+    <string-array name="filter_entries_r4by3">
+        <item>All</item>
+        <item>800 by 600</item>
+        <item>1024 by 768</item>
+        <item>1280 by 1024</item>
+        <item>1600 by 1200</item>
+        <item>None</item>
+    </string-array>
+
+    <string-array name="filter_values_r4by3">
+        <item>All</item>
+        <item>R800X600</item>
+        <item>R1024X768</item>
+        <item>R1280By1024</item>
+        <item>R1600By1200</item>
+        <item>None</item>
+    </string-array>
+
+    <string name="filter_default_r4by3">None</string>
+    <string name="filter_key_r4by3">filter_key_r4by3</string>
+
 </resources>
