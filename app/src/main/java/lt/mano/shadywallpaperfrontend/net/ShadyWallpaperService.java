@@ -2,7 +2,7 @@ package lt.mano.shadywallpaperfrontend.net;
 
 import java.util.List;
 
-import lt.mano.shadywallpaperfrontend.Wallpaper;
+import lt.mano.shadywallpaperfrontend.data.Wallpaper;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;

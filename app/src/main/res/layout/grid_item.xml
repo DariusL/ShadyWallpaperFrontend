@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<lt.mano.shadywallpaperfrontend.GridImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<lt.mano.shadywallpaperfrontend.ui.widgets.GridImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-</lt.mano.shadywallpaperfrontend.GridImageView>
+</lt.mano.shadywallpaperfrontend.ui.widgets.GridImageView>

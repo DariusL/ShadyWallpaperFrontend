@@ -1,4 +1,4 @@
-package lt.mano.shadywallpaperfrontend;
+package lt.mano.shadywallpaperfrontend.ui.widgets;
 
 import android.annotation.TargetApi;
 import android.content.Context;

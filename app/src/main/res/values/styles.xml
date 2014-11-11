@@ -2,7 +2,10 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
-        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">#E64A19</item>
+        <item name="colorPrimaryDark">#BF360C</item>
+        <item name="colorAccent">#FFAB00</item>
     </style>
 
 </resources>

@@ -1,23 +1,20 @@
-package lt.mano.shadywallpaperfrontend;
+package lt.mano.shadywallpaperfrontend.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import lt.mano.shadywallpaperfrontend.R;
+import lt.mano.shadywallpaperfrontend.data.Wallpaper;
 import lt.mano.shadywallpaperfrontend.net.PagedDataService;
 import lt.mano.shadywallpaperfrontend.net.PagedServiceWrapper;
 import lt.mano.shadywallpaperfrontend.net.ShadyWallpaperService;
+import lt.mano.shadywallpaperfrontend.ui.widgets.GridImageView;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Created by Darius on 2014.11.05.
@@ -29,16 +26,11 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.View
 
     private PagedDataService<Wallpaper> service;
 
-    public WallpaperAdapter(Context context, final ShadyWallpaperService service){
+    public WallpaperAdapter(Context context, final PagedServiceWrapper<Wallpaper> service){
         this.context = context;
 
         this.service = new PagedDataService<Wallpaper>(
-                new PagedServiceWrapper<Wallpaper>() {
-                    @Override
-                    public void get(int page, Callback<List<Wallpaper>> callback) {
-                        service.boardWalls("wg", page, callback);
-                    }
-                },
+                service,
                 new PagedDataService.ServiceLoadResult<Wallpaper>() {
                     @Override
                     public void dataUpdated() {
