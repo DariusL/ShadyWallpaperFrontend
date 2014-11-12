@@ -1,20 +1,23 @@
 package lt.mano.shadywallpaperfrontend.net;
 
 import java.util.List;
+import java.util.Map;
 
 import lt.mano.shadywallpaperfrontend.data.Wallpaper;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
+import retrofit.http.QueryMap;
 
 /**
  * Created by Darius on 2014.11.05.
  */
 public interface ShadyWallpaperService {
 
-    @GET("/{board}/walls/{page}?r16x9=R1920By1080")
+    @GET("/{board}/walls/{page}")
     public void boardWalls(
             @Path("board") String board,
             @Path("page") int page,
+            @QueryMap Map<String, String> filterOps,
             Callback<List<Wallpaper>> callback);
 }

@@ -43,7 +43,7 @@
     <item>None</item>
     </string-array>
 
-    <string name="filter_default_r16by9">None</string>
+    <string name="filter_default_r16by9">All</string>
     <string name="filter_key_r16by9">filter_key_r16by9</string>
 
     <string-array name="filter_entries_r4by3">
@@ -64,7 +64,7 @@
         <item>None</item>
     </string-array>
 
-    <string name="filter_default_r4by3">None</string>
+    <string name="filter_default_r4by3">All</string>
     <string name="filter_key_r4by3">filter_key_r4by3</string>
 
 </resources>
