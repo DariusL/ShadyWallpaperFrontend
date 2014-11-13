@@ -3,7 +3,8 @@ package lt.mano.shadywallpaperfrontend.net;
 import java.util.List;
 import java.util.Map;
 
-import lt.mano.shadywallpaperfrontend.data.Wallpaper;
+import lt.mano.shadywallpaperfrontend.data.*;
+import lt.mano.shadywallpaperfrontend.data.Thread;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
@@ -34,5 +35,5 @@ public interface ShadyWallpaperService {
         @Path("board") String board,
         @Path("page") int page,
         @QueryMap Map<String, String> filterOps,
-        Callback<List<Wallpaper>> callback);
+        Callback<List<Thread>> callback);
 }

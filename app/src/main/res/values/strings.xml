@@ -3,8 +3,7 @@
 
     <string name="app_name">Shady Wallpaper Frontend</string>
     <string name="activity_filter_title">Filters</string>
-    <string name="activity_wg_title">wg</string>
-    <string name="activity_w_title">w</string>
+    <string name="activity_browse_title">Browse</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
@@ -15,6 +14,9 @@
     <string name="action_share_image">Share Image</string>
     <string name="loading_image_message">Downloading…</string>
     <string name="action_set_wallpaper">Set as wallpaper</string>
+
+    <string name="browse_threads">Browse threads</string>
+    <string name="browse_walls">Browse wallpapers</string>
 
     <string name="filter_title_r16by9">Lowest shown 16:9 resolution</string>
     <string name="filter_title_r4by3">Lowest shown 4:3 resolution</string>

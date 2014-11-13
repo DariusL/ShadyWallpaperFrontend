@@ -20,12 +20,10 @@ import retrofit.RestAdapter;
 
 public abstract class BaseActivity extends ActionBarActivity{
 
-    protected static final int NAV_DRAWER_ITEM_WG = 0;
-    protected static final int NAV_DRAWER_ITEM_W = 1;
-    protected static final int NAV_DRAWER_ITEM_FILTER = 2;
+    protected static final int NAV_DRAWER_ITEM_BROWSE = 0;
+    protected static final int NAV_DRAWER_ITEM_FILTER = 1;
 
-    private static final int NAV_DRAWER_TITLE_WG = R.string.activity_wg_title;
-    private static final int NAV_DRAWER_TITLE_W = R.string.activity_w_title;
+    private static final int NAV_DRAWER_TITLE_BROWSE = R.string.activity_browse_title;
     private static final int NAV_DRAWER_TITLE_FILTER = R.string.activity_filter_title;
 
     private ListView navigationDrawer;
@@ -69,8 +67,7 @@ public abstract class BaseActivity extends ActionBarActivity{
                     android.R.layout.simple_list_item_activated_1,
                     android.R.id.text1,
                     new String[]{
-                            getString(NAV_DRAWER_TITLE_WG),
-                            getString(NAV_DRAWER_TITLE_W),
+                            getString(NAV_DRAWER_TITLE_BROWSE),
                             getString(NAV_DRAWER_TITLE_FILTER)
                     }));
             navigationDrawer.setItemChecked(getSelfNavItem(), true);
@@ -102,11 +99,9 @@ public abstract class BaseActivity extends ActionBarActivity{
     private void onNavigationDrawerItemSelected(int position){
         closeNavDrawer();
         switch (position){
-            case NAV_DRAWER_ITEM_WG:
-                //TODO: open wg
-                break;
-            case NAV_DRAWER_ITEM_W:
-                //TODO: open w
+            case NAV_DRAWER_ITEM_BROWSE:
+                startActivity(new Intent(this, BrowseActivity.class));
+                finish();
                 break;
             case NAV_DRAWER_ITEM_FILTER:
                 startActivity(new Intent(this, FilterActivity.class));

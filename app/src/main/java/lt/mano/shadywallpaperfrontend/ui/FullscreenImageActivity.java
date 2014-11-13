@@ -68,8 +68,7 @@ public class FullscreenImageActivity extends BaseActivity {
 
     @Override
     protected int getSelfNavItem() {
-        return NAV_DRAWER_ITEM_WG;
-        //TODO: fix
+        return NAV_DRAWER_ITEM_BROWSE;
     }
 
     @Override

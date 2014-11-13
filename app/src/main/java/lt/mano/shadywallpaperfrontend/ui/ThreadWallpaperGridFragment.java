@@ -20,8 +20,8 @@ public class ThreadWallpaperGridFragment extends BoardWallpaperGridFragment{
 
     @Override
     protected PagedServiceWrapper<Wallpaper> createService(final ShadyWallpaperService service) {
-        final String board = "wg";//getArguments().getString(ARG_BOARD, "wg");
-        final int thread = 0;
+        final String board = getArguments().getString(ARG_BOARD, "wg");
+        final long thread = getArguments().getLong(ARG_THREAD, 5947291L);
         return new PagedServiceWrapper<Wallpaper>(){
 
             @Override
