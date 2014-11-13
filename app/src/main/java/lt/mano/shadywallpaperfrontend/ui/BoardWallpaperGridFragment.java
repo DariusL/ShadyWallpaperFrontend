@@ -33,7 +33,7 @@ import retrofit.Callback;
  */
 public class BoardWallpaperGridFragment extends Fragment implements WallpaperAdapter.OnItemClickListener{
 
-    public static final String ARG_BOARD = "BoardWallpaperGridFragment.arg.board";
+    protected static final String ARG_BOARD = "BoardWallpaperGridFragment.arg.board";
 
     private BaseActivity activity;
     private ShadyWallpaperService service;
@@ -80,7 +80,7 @@ public class BoardWallpaperGridFragment extends Fragment implements WallpaperAda
     }
 
     protected PagedServiceWrapper<Wallpaper> createService(final ShadyWallpaperService service){
-        final String board = "wg";//getArguments().getString(ARG_BOARD, "wg");
+        final String board = getArguments().getString(ARG_BOARD, "wg");
         return new PagedServiceWrapper<Wallpaper>(){
 
             @Override
@@ -120,5 +120,11 @@ public class BoardWallpaperGridFragment extends Fragment implements WallpaperAda
         Intent intent = new Intent(getActivity(), FullscreenImageActivity.class);
         intent.putExtra(FullscreenImageActivity.ARG_URL, item.getWallUrl());
         startActivity(intent);
+    }
+
+    public static Bundle createArgs(String board){
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_BOARD, board);
+        return bundle;
     }
 }
