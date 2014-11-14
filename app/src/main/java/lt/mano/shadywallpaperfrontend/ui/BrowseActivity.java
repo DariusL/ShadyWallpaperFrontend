@@ -1,7 +1,6 @@
 package lt.mano.shadywallpaperfrontend.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -49,9 +48,9 @@ public class BrowseActivity extends BaseActivity implements
 
     @Override
     public void onWallpaperClicked(Wallpaper wallpaper) {
-        Intent intent = new Intent(this, FullscreenImageActivity.class);
-        intent.putExtra(FullscreenImageActivity.ARG_URL, wallpaper.getWallUrl());
-        startActivity(intent);
+        Fragment fragment = new FullscreenImageFragment();
+        fragment.setArguments(FullscreenImageFragment.createBundle(wallpaper));
+        pushFragment(fragment);
     }
 
     @Override

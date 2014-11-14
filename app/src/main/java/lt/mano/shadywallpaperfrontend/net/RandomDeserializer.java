@@ -7,14 +7,15 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import lt.mano.shadywallpaperfrontend.data.Wallpaper;
+import lt.mano.shadywallpaperfrontend.data.*;
+import lt.mano.shadywallpaperfrontend.data.Thread;
 
 /**
  * Created by Darius on 2014.11.06.
  */
-public class RandomDeserializer implements JsonDeserializer<Wallpaper> {
+public class RandomDeserializer <T> implements JsonDeserializer<T> {
     @Override
-    public Wallpaper deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         return null;
     }
 }

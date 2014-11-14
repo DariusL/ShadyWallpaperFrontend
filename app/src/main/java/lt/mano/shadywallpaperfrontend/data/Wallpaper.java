@@ -9,17 +9,11 @@ import java.lang.String;
 public class Wallpaper {
     @SerializedName("WallUrl")
     private String wallUrl;
-    @SerializedName("ThumbUrl")
-    private String thumbUrl;
     @SerializedName("Id")
     private long id;
 
     public String getWallUrl() {
         return wallUrl;
-    }
-
-    public String getThumbUrl() {
-        return thumbUrl;
     }
 
     public long getId(){

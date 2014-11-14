@@ -20,12 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ui.FullscreenImageActivity"/>
         <activity
             android:label="@string/activity_filter_title"
-            android:name=".ui.FilterActivity"/>
+            android:name=".ui.FilterActivity">
+        </activity>
     </application>
 
 </manifest>

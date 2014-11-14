@@ -1,14 +1,19 @@
 package lt.mano.shadywallpaperfrontend.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,13 +29,13 @@ import lt.mano.shadywallpaperfrontend.utils.Utils;
 /**
  * Created by Darius on 2014.11.07.
  */
-public class FullscreenImageActivity extends BaseActivity {
+public class FullscreenImageFragment extends Fragment {
 
-    public static final String ARG_URL = "FullscreenImageActivity.URL";
-    public static final String ARG_WIDTH = "FullscreenImageActivity.WIDTH";
-    public static final String ARG_HEIGHT = "FullscreenImageActivity.HEIGHT";
-    public static final String ARG_POS_X = "FullscreenImageActivity.POS_X";
-    public static final String ARG_POS_Y = "FullscreenImageActivity.POS_Y";
+    private static final String ARG_URL = "FullscreenImageActivity.URL";
+    private static final String ARG_WIDTH = "FullscreenImageActivity.WIDTH";
+    private static final String ARG_HEIGHT = "FullscreenImageActivity.HEIGHT";
+    private static final String ARG_POS_X = "FullscreenImageActivity.POS_X";
+    private static final String ARG_POS_Y = "FullscreenImageActivity.POS_Y";
 
     private File imagePath;
 
@@ -38,51 +43,41 @@ public class FullscreenImageActivity extends BaseActivity {
     private View overlay;
 
     private String url;
+    private Handler handler;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fullscreen_image);
+        setHasOptionsMenu(true);
+        handler = new Handler();
+    }
 
-        overlay = findViewById(R.id.overlay);
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
-        fullscreenImage = (PicassoImageView) findViewById(R.id.image_fullscreen);
-        url = getIntent().getExtras().getString(ARG_URL);
+        url = getArguments().getString(ARG_URL);
+        imagePath = new File(activity.getExternalCacheDir().getAbsolutePath() + "/" + url.replace('/', '*'));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_fullscreen_image, container, false);
+        overlay = view.findViewById(R.id.overlay);
+        fullscreenImage = (PicassoImageView) view.findViewById(R.id.image_fullscreen);
         fullscreenImage.setImage(url);
-
-        imagePath = new File(getExternalCacheDir().getAbsolutePath() + "/" + url.replace('/', '*'));
+        return view;
     }
 
     @Override
-    protected void setupToolbar(Toolbar toolbar) {
-        super.setupToolbar(toolbar);
-
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-    }
-
-    @Override
-    protected int getSelfNavItem() {
-        return NAV_DRAWER_ITEM_BROWSE;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.fullscreen_image, menu);
-        return true;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fullscreen_image, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case android.R.id.home:
-                finish();
-                return true;
             case R.id.action_share_image:
                 share();
                 return true;
@@ -161,5 +156,15 @@ public class FullscreenImageActivity extends BaseActivity {
         bundle.putInt(ARG_POS_X, posX);
         bundle.putInt(ARG_POS_Y, posY);
         return bundle;
+    }
+
+    public static Bundle createBundle(Wallpaper wallpaper){
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_URL, wallpaper.getWallUrl());
+        return bundle;
+    }
+
+    private void runOnUiThread(Runnable runnable){
+        handler.post(runnable);
     }
 }

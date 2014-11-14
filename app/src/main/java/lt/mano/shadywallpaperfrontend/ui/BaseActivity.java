@@ -13,9 +13,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import lt.mano.shadywallpaperfrontend.R;
+import lt.mano.shadywallpaperfrontend.data.*;
+import lt.mano.shadywallpaperfrontend.data.Thread;
+import lt.mano.shadywallpaperfrontend.net.RandomDeserializer;
 import lt.mano.shadywallpaperfrontend.net.ShadyWallpaperService;
 import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 
 
 public abstract class BaseActivity extends ActionBarActivity{
@@ -118,10 +125,12 @@ public abstract class BaseActivity extends ActionBarActivity{
 
     public ShadyWallpaperService getService() {
         if (service == null) {
+
             RestAdapter adapter = new RestAdapter.Builder()
                     .setEndpoint("http://shadywallpaperservice.apphb.com")
                     .build();
             service = adapter.create(ShadyWallpaperService.class);
+
         }
         return service;
     }
