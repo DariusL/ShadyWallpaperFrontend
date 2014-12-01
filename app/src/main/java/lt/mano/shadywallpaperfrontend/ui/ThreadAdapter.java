@@ -3,9 +3,11 @@ package lt.mano.shadywallpaperfrontend.ui;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import lt.mano.shadywallpaperfrontend.R;
 import lt.mano.shadywallpaperfrontend.data.*;
@@ -17,7 +19,7 @@ import lt.mano.shadywallpaperfrontend.ui.widgets.PicassoImageView;
 /**
  * Created by Darius on 2014.11.13.
  */
-public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder> {
+public class ThreadAdapter extends BaseAdapter<ThreadAdapter.ViewHolder> {
 
     private Context context;
     private OnItemClickListener listener;
@@ -32,7 +34,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                 new PagedDataService.ServiceLoadResult<Thread>() {
                     @Override
                     public void dataUpdated() {
-                        notifyDataSetChanged();
+                        notifyInternal();
                     }
 
                     @Override
@@ -46,16 +48,22 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private PicassoImageView image;
+        private TextView title;
+        private TextView threadId;
 
-        public ViewHolder(CardView card, PicassoImageView image) {
+        public ViewHolder(CardView card) {
             super(card);
-            this.image = image;
+            this.image = (PicassoImageView) card.findViewById(R.id.list_item_image);
+            this.title = (TextView) card.findViewById(R.id.list_item_text);
+            this.threadId = (TextView) card.findViewById(R.id.list_item_thread_id);
             itemView.setOnClickListener(onClickListener);
         }
 
         public synchronized void setThread(Thread thread){
             itemView.setTag(thread);
             image.setImage(thread.getOpPost().getWallUrl());
+            title.setText(Html.fromHtml(thread.getOpContent()).toString());
+            threadId.setText(String.valueOf(thread.getId()));
         }
     }
 
@@ -64,8 +72,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         CardView view = (CardView) LayoutInflater
                 .from(viewGroup.getContext())
                 .inflate(R.layout.list_item, viewGroup, false);
-        PicassoImageView image = (PicassoImageView) view.findViewById(R.id.list_item_image);
-        return new ViewHolder(view, image);
+        return new ViewHolder(view);
     }
 
     @Override

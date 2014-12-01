@@ -34,15 +34,23 @@ import retrofit.Callback;
 public class BoardWallpaperGridFragment extends ServiceFragment implements WallpaperAdapter.OnItemClickListener{
 
     protected static final String ARG_BOARD = "BoardWallpaperGridFragment.arg.board";
+    private View loadingOverlay;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wallpaper_grid, container, false);
         RecyclerView recycler = (RecyclerView) view.findViewById(R.id.grid);
+        loadingOverlay = view.findViewById(R.id.loading);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         recycler.setLayoutManager(layoutManager);
         recycler.setHasFixedSize(true);
         WallpaperAdapter adapter = new WallpaperAdapter(getActivity(), createService(service));
+        adapter.setDataObserver(new BaseAdapter.DataObserver() {
+            @Override
+            public void dataUpdated() {
+                loadingOverlay.setVisibility(View.GONE);
+            }
+        });
         adapter.setOnItemClickListener(this);
         recycler.setAdapter(adapter);
         return view;

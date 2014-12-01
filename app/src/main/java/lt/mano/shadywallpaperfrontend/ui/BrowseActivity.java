@@ -24,8 +24,10 @@ public class BrowseActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Fragment fragment = new BoardsFragment();
-        pushFragment(fragment);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content, new BoardsFragment())
+                .commit();
     }
 
     @Override

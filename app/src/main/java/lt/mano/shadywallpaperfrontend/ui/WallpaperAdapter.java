@@ -19,7 +19,7 @@ import retrofit.Callback;
 /**
  * Created by Darius on 2014.11.05.
  */
-public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.ViewHolder> {
+public class WallpaperAdapter extends BaseAdapter<WallpaperAdapter.ViewHolder> {
 
     private Context context;
     private OnItemClickListener listener;
@@ -34,7 +34,7 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.View
                 new PagedDataService.ServiceLoadResult<Wallpaper>() {
                     @Override
                     public void dataUpdated() {
-                        notifyDataSetChanged();
+                        notifyInternal();
                     }
 
                     @Override
