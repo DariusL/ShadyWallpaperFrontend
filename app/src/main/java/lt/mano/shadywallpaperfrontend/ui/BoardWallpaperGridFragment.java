@@ -41,7 +41,7 @@ public class BoardWallpaperGridFragment extends ServiceFragment implements Wallp
         View view = inflater.inflate(R.layout.fragment_wallpaper_grid, container, false);
         RecyclerView recycler = (RecyclerView) view.findViewById(R.id.grid);
         loadingOverlay = view.findViewById(R.id.loading);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), findColumnCount());
         recycler.setLayoutManager(layoutManager);
         recycler.setHasFixedSize(true);
         WallpaperAdapter adapter = new WallpaperAdapter(getActivity(), createService(service));
@@ -68,6 +68,14 @@ public class BoardWallpaperGridFragment extends ServiceFragment implements Wallp
                 service.boardWalls(board, page, map, callback);
             }
         };
+    }
+
+    private int findColumnCount(){
+        WindowManager manager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
+        Point point = new Point();
+        manager.getDefaultDisplay().getSize(point);
+        int width = activity.getResources().getDimensionPixelSize(R.dimen.grid_column_min_width);
+        return point.x / width;
     }
 
     @Override
