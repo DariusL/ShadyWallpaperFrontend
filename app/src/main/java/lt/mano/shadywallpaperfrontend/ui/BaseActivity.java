@@ -57,6 +57,14 @@ public abstract class BaseActivity extends ActionBarActivity{
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(navigationDrawer != null){
+            navigationDrawer.setItemChecked(getSelfNavItem(), true);
+        }
+    }
+
     private void setupNavDrawer(){
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationDrawer = (ListView) findViewById(R.id.navigation_drawer);
