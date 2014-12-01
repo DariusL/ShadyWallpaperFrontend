@@ -24,10 +24,12 @@ public class BrowseActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.content, new BoardsFragment())
-                .commit();
+        if(getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content, new BoardsFragment())
+                    .commit();
+        }
     }
 
     @Override

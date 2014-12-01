@@ -54,10 +54,10 @@ public class PagedDataService <T> {
         @Override
         public void success(List<T> ts, Response response) {
             loading = false;
+            listener.dataUpdated();
             if(ts.size() > 0){
                 page++;
                 data.addAll(ts);
-                listener.dataUpdated();
             }else{
                 allLoaded = true;
                 listener.endReached();
