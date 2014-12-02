@@ -11,6 +11,8 @@ public class Wallpaper {
     private String wallUrl;
     @SerializedName("Id")
     private long id;
+    @SerializedName("Board")
+    private String board;
 
     public String getWallUrl() {
         return wallUrl;
@@ -18,5 +20,9 @@ public class Wallpaper {
 
     public long getId(){
         return id;
+    }
+
+    public String getBoard(){
+        return board;
     }
 }

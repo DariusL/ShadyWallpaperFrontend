@@ -28,6 +28,6 @@ public class Thread {
     }
 
     public String getBoard() {
-        return board;
+        return opPost.getBoard();
     }
 }

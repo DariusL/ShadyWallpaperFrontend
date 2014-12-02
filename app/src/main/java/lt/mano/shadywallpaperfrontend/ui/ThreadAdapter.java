@@ -77,8 +77,8 @@ public class ThreadAdapter extends BaseAdapter<ThreadAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Thread wall = service.get(i);
-        viewHolder.setThread(wall);
+        Thread thread = service.get(i);
+        viewHolder.setThread(thread);
     }
 
     @Override
