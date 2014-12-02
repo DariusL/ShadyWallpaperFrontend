@@ -134,8 +134,13 @@ public abstract class BaseActivity extends ActionBarActivity{
     public ShadyWallpaperService getService() {
         if (service == null) {
 
+            /*Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Thread.class, new RandomDeserializer<Thread>())
+                    .create();*/
+
             RestAdapter adapter = new RestAdapter.Builder()
                     .setEndpoint("http://shadywallpaperservice.apphb.com")
+                    //.setConverter(new GsonConverter(gson))
                     .build();
             service = adapter.create(ShadyWallpaperService.class);
 
